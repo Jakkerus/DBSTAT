@@ -1,0 +1,6 @@
+{% extends "base/navbase.html" %}
+{% load crispy_forms_tags %}
+{{ form.media }}
+{% block content %}
+{% crispy form %}
+{% endblock content %}

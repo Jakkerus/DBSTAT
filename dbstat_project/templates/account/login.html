@@ -1,0 +1,23 @@
+{% extends "base/loginbase.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+{% block content %}
+<body class="login">
+    <form class="form-signin text-center" action="{% provider_login_url "google" process="login" %}">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    <img class="mb-3" src="{% static 'images/dbatlogo.png' %}" alt="" width="200" height="172">
+    <img class="mb-3" src="{% static 'images/statlogo.png' %}" alt="" width="128" height="64">
+    <button class="btn-lg btn-block btn-google btn-light" type="submit"><img class='google-button-logo' src="{% static 'images/g-logo.png' %}">
+        Sign in with Google
+    </button>
+  </form>
+{% endblock content %}

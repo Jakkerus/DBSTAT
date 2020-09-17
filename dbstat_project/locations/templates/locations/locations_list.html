@@ -1,0 +1,15 @@
+{% extends "base/navbase.html" %}
+
+{% block content %}
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% for location in locations %}
+                    <ul>
+                        <li><a href="{% url 'locations:locations-detail' location.id %}">{{ location.name }}</a></li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}

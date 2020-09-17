@@ -1,0 +1,108 @@
+{% extends "base/skeleton.html" %}
+{% load static %}
+    {% block body %}
+    <body>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <header class="site-header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand" href="{% url 'homepage' %}">
+            <img src="{% static 'images/dbstatlogo.png' %}" width="282" height="61" class="d-inline-block align-center" alt="" loading="lazy">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarexpander" aria-controls="navbarexpander" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarexpander">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarLocations" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Locations
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarLocations">
+                  <a class="dropdown-item" href="{% url 'locations:locations-create' %}">New Location</a>
+                  <a class="dropdown-item" href="{% url 'locations:locations-home' %}">Existing Locations</a>
+                  <a class="dropdown-item" href="#">Under Construction</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarContacts" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Contacts
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarContacts">
+                  <a class="dropdown-item" href="#">Add Contact</a>
+                  <a class="dropdown-item" href="#">Search Contacts</a>
+                  <a class="dropdown-item" href="#">Contact Administration</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarAssets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Assets
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarAssets">
+                  <a class="dropdown-item" href="#">New Assets</a>
+                  <a class="dropdown-item" href="#">Unassigned Assets</a>
+                  <a class="dropdown-item" href="#">Existing Assets</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarTickets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Tickets
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarTickets">
+                  <a class="dropdown-item" href="#">Submit Ticket</a>
+                  <a class="dropdown-item" href="#">Pending Tickets</a>
+                  <a class="dropdown-item" href="#">Closed Tickets</a>
+                </div>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Welcome, {% if user.first_name %} {{ user.first_name }} {% else %} {{ user.username }} {% endif %}!
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarUser">
+                  {% if request.user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'admin:index' %}">Administration</a>
+                  {% endif %}
+                  <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                  <a class="dropdown-item" href="#exampleModalCenter" data-toggle="modal" data-target="#exampleModalCenter">Log Out</a>
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        Are you sure you want to log out?
+                      </div>
+                      <div class="modal-footer">
+                        <form method="post" action="{% url 'account_logout' %}">
+                          {% csrf_token %}
+                          {% if redirect_field_value %}
+                          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                          {% endif %}
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                          <button type="submit" class="btn btn-danger">Yes</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
+      </header>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+      {% endblock body %}
+      </main>
+    
